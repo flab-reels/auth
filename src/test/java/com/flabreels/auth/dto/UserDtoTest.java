@@ -13,7 +13,7 @@ class UserDtoTest {
         // Given
         String email = "godol811@naver.com";
         String picture = "http://picture.org";
-        String name = "고돌";
+        String name = "godol";
         // When
         UserDto userDto = UserDto.builder()
                 .name(name)

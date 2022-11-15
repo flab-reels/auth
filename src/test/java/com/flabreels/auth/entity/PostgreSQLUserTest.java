@@ -1,5 +1,6 @@
 package com.flabreels.auth.entity;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 )
 class PostgreSQLUserTest {
 
+    @Disabled
     @DisplayName("PostgreSQL 연결 테스트")
     @Test
     public void insertTest(){
