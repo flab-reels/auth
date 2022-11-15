@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -27,7 +28,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         log.info("{}", oAuth2Attribute);
 
-        var memberAttribute = oAuth2Attribute.convertToMap();
+        Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
 
 
         return new DefaultOAuth2User(

@@ -1,10 +1,10 @@
 package com.flabreels.auth.controller;
 
 
-import com.flab.reels.auth.dto.TokenResponseDto;
-import com.flab.reels.auth.dto.ValidResponseDto;
-import com.flab.reels.auth.entity.UserRepository;
-import com.flab.reels.auth.jwt.TokenService;
+import com.flabreels.auth.dto.TokenResponseDto;
+import com.flabreels.auth.dto.ValidResponseDto;
+import com.flabreels.auth.entity.UserRepository;
+import com.flabreels.auth.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

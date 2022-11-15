@@ -1,13 +1,13 @@
 package com.flabreels.auth.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flab.reels.auth.dto.TokenResponseDto;
-import com.flab.reels.auth.dto.UserDto;
-import com.flab.reels.auth.entity.Platform;
-import com.flab.reels.auth.entity.Role;
-import com.flab.reels.auth.entity.UserRepository;
-import com.flab.reels.auth.jwt.TokenService;
-import com.flab.reels.auth.mapper.UserRequestMapper;
+import com.flabreels.auth.dto.TokenResponseDto;
+import com.flabreels.auth.dto.UserDto;
+import com.flabreels.auth.entity.Platform;
+import com.flabreels.auth.entity.Role;
+import com.flabreels.auth.entity.UserRepository;
+import com.flabreels.auth.jwt.TokenService;
+import com.flabreels.auth.mapper.UserRequestMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.addHeader("refresh_token", tokenResponseDto.getRefreshToken());
         response.setContentType("application/json;charset=UTF-8");
 
-        var writer = response.getWriter();
+        PrintWriter writer = response.getWriter();
         writer.println(objectMapper.writeValueAsString(tokenResponseDto));
         writer.flush();
     }

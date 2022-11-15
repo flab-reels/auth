@@ -1,8 +1,8 @@
 package com.flabreels.auth.dto;
 
-import com.flab.reels.auth.entity.Platform;
-import com.flab.reels.auth.entity.Role;
-import com.flab.reels.auth.entity.User;
+import com.flabreels.auth.entity.Platform;
+import com.flabreels.auth.entity.Role;
+import com.flabreels.auth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
