@@ -22,7 +22,7 @@ public class SecurityConfig {
     /* Security 작동시 Authorize 제외 Method */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().antMatchers("/h2-console/**" , "/favicon.ico" ,"/error", "/auth/**"));
+        return (web -> web.ignoring().antMatchers("/h2-console/**" , "/favicon.ico" ,"/error", "/auth/**","login/**"));
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,6 +37,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/login")
+                .and()
                 .successHandler(successHandler)
                 .userInfoEndpoint().userService(oauth2UserService)
                 .and()
