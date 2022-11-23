@@ -22,8 +22,9 @@ public class SecurityConfig {
     /* Security 작동시 Authorize 제외 Method */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().antMatchers("/h2-console/**" , "/favicon.ico" ,"/error", "/auth/**"));
+        return (web -> web.ignoring().antMatchers("/h2-console/**" , "/favicon.ico" ,"/error", "/auth/**", "/test/hello"));
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -44,6 +45,4 @@ public class SecurityConfig {
                 .and()
                 .and().build();
     }
-
-
 }
