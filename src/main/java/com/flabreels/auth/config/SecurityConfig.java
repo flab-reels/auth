@@ -22,7 +22,7 @@ public class SecurityConfig {
     /* Security 작동시 Authorize 제외 Method */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().antMatchers("/index","/h2-console/**" ,"/css/**", "/images/**", "/js/**", "/favicon.ico" ,"/error", "/auth/**", "/test/hello"));
+        return (web -> web.ignoring().antMatchers("/index","/h2-console/**" ,"/css/**", "/images/**", "/js/**", "/favicon.ico" ,"/error", "/auth/**", "/test/hello","/token/**"));
     }
 
     @Bean
