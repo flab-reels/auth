@@ -25,30 +25,25 @@ public class AuthController {
 
     @GetMapping("/access")
     public ResponseEntity<ValidResponseDto> validToken(HttpServletRequest request, HttpServletResponse response){
-        String accessToken = request.getHeader("access_token");
-        String refreshToken = request.getHeader("refresh_token");
-        boolean verifyAccessToken = tokenService.verifyToken(accessToken);
 
+        boolean verifyAccessToken = tokenService.verifyAccessToken(request);
         if (verifyAccessToken){
-            response.addHeader("access_token", accessToken);
-            response.addHeader("refresh_token", refreshToken);
+            response.addHeader("access_token", request.getHeader("access_token"));
+            response.addHeader("refresh_token", request.getHeader("refresh_token"));
             response.setContentType("application/json;charset=UTF-8");
-            return ResponseEntity.ok(tokenService.getEmailAndPicture(accessToken));
+            return ResponseEntity.ok(tokenService.getEmailAndPicture(request.getHeader("access_token")));
         }
         return (ResponseEntity<ValidResponseDto>) ResponseEntity.status(HttpStatus.NOT_FOUND);
-
-
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<TokenResponseDto> refreshToken(HttpServletRequest request, HttpServletResponse response){
-        String accessToken = request.getHeader("access_token");
-        String refreshToken = request.getHeader("refresh_token");
-        boolean verifyRefreshToken = tokenService.verifyToken(refreshToken);
+
+        boolean verifyRefreshToken = tokenService.verifyRefreshToken(request);
         if (verifyRefreshToken){
-            TokenResponseDto tokenResponseDto = tokenService.regenerateAccessTokenWithRefreshToken(refreshToken);
+            TokenResponseDto tokenResponseDto = tokenService.regenerateAccessTokenWithRefreshToken(request);
             response.addHeader("access_token", tokenResponseDto.getAccessToken());
-            response.addHeader("refresh_token", refreshToken);
+            response.addHeader("refresh_token", request.getHeader("refresh_token"));
             response.setContentType("application/json;charset=UTF-8");
             return ResponseEntity.ok(tokenResponseDto);
         }
