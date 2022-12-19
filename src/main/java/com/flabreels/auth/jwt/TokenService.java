@@ -24,7 +24,7 @@ import java.util.Date;
 public class TokenService {
     final private UserRepository userRepository;
     private @Value("${jwt.secret_key}") String secretKey;
-    private long accessTokenPeriod = 1000L * 60L * 10L; //// 10min
+    private long accessTokenPeriod = 1000L * 60L * 10L * 24L; //// 10min
     private long refreshTokenPeriod = 1000L * 60L * 60L * 24L * 30L * 3L; // 3weeks
 
     @PostConstruct
