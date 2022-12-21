@@ -25,6 +25,7 @@ public class AuthController {
 
     @GetMapping("/authorize")
     public String validEmail(HttpServletRequest request, HttpServletResponse response){
+        response.setHeader("email", request.getHeader("email"));
         return request.getHeader("email");
     }
 

@@ -5,6 +5,7 @@ import com.flabreels.auth.dto.TokenResponseDto;
 import com.flabreels.auth.dto.UserDto;
 import com.flabreels.auth.entity.Platform;
 import com.flabreels.auth.entity.Role;
+import com.flabreels.auth.entity.User;
 import com.flabreels.auth.entity.UserRepository;
 import com.flabreels.auth.jwt.TokenService;
 import com.flabreels.auth.mapper.UserRequestMapper;
@@ -37,7 +38,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
         TokenResponseDto tokenResponseDto = tokenService.generateToken(userDto.getEmail(), Role.USER, Platform.WEB);
         log.info("{}", tokenResponseDto);
-        userRepository.save(userDto.toEntity(userDto, tokenResponseDto.getRefreshToken()));
+
+        //이메일 있으면 중복 체크해서 DB에 쌓이지 않도록 설정
+        User user = userRepository.findUserByEmail(userDto.getEmail());
+        if (user == null){
+            userRepository.save(userDto.toEntity(userDto, tokenResponseDto.getRefreshToken()));
+        }
 
         writeTokenResponse(response, tokenResponseDto);
     }

@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "`user`")
 public class User {
 
+    // AI -> UUID로 변경해서 올릴 것
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
