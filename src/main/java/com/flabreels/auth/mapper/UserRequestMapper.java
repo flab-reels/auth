@@ -25,6 +25,7 @@ public class UserRequestMapper {
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
+                .refreshToken(user.getRefreshToken())
                 .picture(user.getPicture())
                 .build();
     }
