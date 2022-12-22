@@ -14,14 +14,21 @@ public class UserDto {
     private String picture;
     private String name;
     private String id;
+    private Role role;
+    private Platform platform;
 
     @Builder
-    public UserDto(String email, String picture, String name, String id) {
+    public UserDto(String email, String picture, String name, String id, Role role, Platform platform) {
         this.email = email;
         this.picture = picture;
         this.name = name;
         this.id = id;
+        this.role = role;
+        this.platform = platform;
     }
+
+
+
 
     public User toEntity(UserDto userDto, String refreshToken){
         return User.builder()

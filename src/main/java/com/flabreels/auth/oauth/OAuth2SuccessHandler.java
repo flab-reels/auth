@@ -36,14 +36,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
-        TokenResponseDto tokenResponseDto = tokenService.generateToken(userDto.getId(), userDto.getEmail(), userDto.getPicture() ,Role.USER, Platform.WEB);
-        log.info("{}", tokenResponseDto);
-
+        TokenResponseDto tokenResponseDto = null;
         //이메일 있으면 중복 체크해서 DB에 쌓이지 않도록 설정
-        User user = userRepository.findUserById(userDto.getId());
-        if (user == null){
-            userRepository.save(userDto.toEntity(userDto, tokenResponseDto.getRefreshToken()));
+        UserDto existedUser = userRepository.findUserById(userDto.getEmail());
+        if (existedUser== null){
+            tokenResponseDto = tokenService.generateToken(userDto.getId(), userDto.getEmail(), userDto.getPicture() ,Role.USER, Platform.WEB);
+            log.info("{}", tokenResponseDto);
+        }else{
+            tokenResponseDto = tokenService.generateToken(existedUser.getId(), existedUser.getEmail(), existedUser.getPicture(), existedUser.getRole(), existedUser.getPlatform());
         }
+        userRepository.save(userDto.toEntity(userDto, tokenResponseDto.getRefreshToken()));
 
         writeTokenResponse(response, tokenResponseDto);
     }
