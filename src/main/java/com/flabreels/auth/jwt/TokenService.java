@@ -32,9 +32,9 @@ public class TokenService {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public TokenResponseDto generateToken(String uid, Role role, Platform platform){
+    public TokenResponseDto generateToken(String id, Role role, Platform platform){
 
-        Claims claims = Jwts.claims().setSubject(uid);
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("role", role);
         Date now = new Date();
         // WEB일경우 AccessToken , RefreshToken 반환
@@ -52,7 +52,7 @@ public class TokenService {
                             .setExpiration(new Date(now.getTime() + refreshTokenPeriod))
                             .signWith(SignatureAlgorithm.HS256, secretKey)
                             .compact()
-                    ,uid
+                    ,id
                     ,Platform.WEB
             );
         }
@@ -64,7 +64,7 @@ public class TokenService {
                         .setExpiration(new Date(now.getTime() + refreshTokenPeriod))
                         .signWith(SignatureAlgorithm.HS256, secretKey)
                         .compact()
-                ,uid
+                ,id
                 ,Platform.MOBILE
         );
 
@@ -73,13 +73,14 @@ public class TokenService {
     public TokenResponseDto regenerateAccessTokenWithRefreshToken(HttpServletRequest request){
         String refreshToken = request.getHeader("refresh_token");
         User user = userRepository.findUserByRefreshToken(refreshToken);
+        String id = user.getId();
         String dbEmail = user.getEmail();
         String dbRefreshToken = user.getRefreshToken();
         log.info("{}",user);
-        // Refresh Token이 유효하고 RefreshToken과 일치하다며 이메일이 Database에 존재한다면
+        // Refresh Token이 유효하고 RefreshToken과 일치하다며 ID가 Database에 존재한다면
 
-        if ((verifyRefreshToken(request)) && (refreshToken.equals(dbRefreshToken)) && (dbEmail != null)){
-            Claims claims = Jwts.claims().setSubject(dbEmail);
+        if ((verifyRefreshToken(request)) && (refreshToken.equals(dbRefreshToken)) && (id != null)){
+            Claims claims = Jwts.claims().setSubject(id);
             claims.put("role", user.getRole());
             Date now = new Date();
             return new TokenResponseDto(
@@ -90,45 +91,31 @@ public class TokenService {
                             .signWith(SignatureAlgorithm.HS256, secretKey)
                             .compact()
                     ,dbRefreshToken
-                    ,dbEmail
+                    ,id
                     ,Platform.WEB
             );
 
         }
-        // 이메일이 유효하고 Access Token 과 Refresh Token 이 만료 되었다면 새로이 Token들을 재발급
-        return generateToken(dbEmail,Role.USER,Platform.WEB);
+        // ID가 유효하고 Access Token 과 Refresh Token 이 만료 되었다면 새로이 Token들을 재발급
+        return generateToken(id,Role.USER,Platform.WEB);
     }
 
     //토큰 검증
     public boolean verifyAccessToken(HttpServletRequest request){
         String accessToken = request.getHeader("access_token");
-
-        if (accessToken != null){
-            try {
-                Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken);
-                return true;
-            } catch (SignatureException e) {
-                log.error("유효하지 않은 서명 토큰", e);
-            } catch (MalformedJwtException e) {
-                log.error("유효하지 않은 토큰", e);
-            } catch (ExpiredJwtException e) {
-                log.error("만료된 토큰", e);
-            } catch (UnsupportedJwtException e) {
-                log.error("지원하지 않는 토큰", e);
-            } catch (IllegalArgumentException e) {
-                log.error("비어있는 토큰", e);
-            }
-        }
-        return false;
+        return tokenExceptionHandler(accessToken);
     }
 
     //토큰 검증
     public boolean verifyRefreshToken(HttpServletRequest request){
         String refreshToken = request.getHeader("refresh_token");
+        return tokenExceptionHandler(refreshToken);
+    }
 
-        if (refreshToken != null){
+    public boolean tokenExceptionHandler(String token){
+        if (token != null){
             try {
-                Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
+                Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
                 return true;
             } catch (SignatureException e) {
                 log.error("유효하지 않은 서명 토큰", e);
@@ -145,11 +132,11 @@ public class TokenService {
         return false;
     }
 
-    public ValidResponseDto getEmailAndPicture(String token) {
-        String email = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        String picture = userRepository.findUserByEmail(email).getPicture();
+    public ValidResponseDto getIdAndPicture(String token) {
+        String id = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        String picture = userRepository.findUserById(id).getPicture();
         return ValidResponseDto.builder()
-                .email(email)
+                .id(id)
                 .picture(picture)
                 .build();
     }

@@ -12,11 +12,10 @@ import javax.persistence.*;
 @Table(name = "`user`")
 public class User {
 
-    // AI -> UUID로 변경해서 올릴 것
+    // UUID 로 변경해서 올릴 것
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "email")
     private String email;
@@ -39,7 +38,7 @@ public class User {
     private Role role;
 
     @Builder
-    public User(Long id, String email, String name, String picture, String refreshToken, Platform platform, Role role) {
+    public User(String id, String email, String name, String picture, String refreshToken, Platform platform, Role role) {
         this.id = id;
         this.email = email;
         this.name = name;

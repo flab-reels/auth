@@ -25,8 +25,8 @@ public class AuthController {
 
     @GetMapping("/authorize")
     public String validEmail(HttpServletRequest request, HttpServletResponse response){
-        response.setHeader("email", request.getHeader("email"));
-        return request.getHeader("email");
+        response.setHeader("id", request.getHeader("id"));
+        return request.getHeader("id");
     }
 
     @GetMapping("/access")
@@ -37,7 +37,7 @@ public class AuthController {
             response.addHeader("access_token", request.getHeader("access_token"));
             response.addHeader("refresh_token", request.getHeader("refresh_token"));
             response.setContentType("application/json;charset=UTF-8");
-            return ResponseEntity.ok(tokenService.getEmailAndPicture(request.getHeader("access_token")));
+            return ResponseEntity.ok(tokenService.getIdAndPicture(request.getHeader("access_token")));
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

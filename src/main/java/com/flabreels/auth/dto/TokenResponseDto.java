@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 public class TokenResponseDto {
+    private String id;
     private String accessToken;
     private String refreshToken;
     private String email;
@@ -17,7 +18,8 @@ public class TokenResponseDto {
     private Platform platform;
 
     @Builder
-    public TokenResponseDto(String accessToken, String refreshToken, String email, String picture, Platform platform) {
+    public TokenResponseDto(String id, String accessToken, String refreshToken, String email, String picture, Platform platform) {
+        this.id = id;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.email = email;
@@ -25,8 +27,19 @@ public class TokenResponseDto {
         this.platform = platform;
     }
 
+
+
     @Builder
-    public TokenResponseDto(String accessToken, String refreshToken, String email, Platform platform) {
+    public TokenResponseDto(String id, String accessToken, Platform platform) {
+        this.id = id;
+        this.accessToken = accessToken;
+        this.platform = platform;
+    }
+
+
+    @Builder
+    public TokenResponseDto(String id, String accessToken, String refreshToken, String email, Platform platform) {
+        this.id = id;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.email = email;
@@ -36,15 +49,19 @@ public class TokenResponseDto {
 
 
     @Builder
-    public TokenResponseDto(String accessToken, String email,  Platform platform) {
+    public TokenResponseDto(String id, String accessToken, String email,  Platform platform) {
+        this.id = id;
         this.accessToken = accessToken;
         this.email = email;
         this.platform = platform;
     }
 
     @Builder
-    public TokenResponseDto(String email, String picture) {
+    public TokenResponseDto(String id, String email, String picture) {
+        this.id = id;
         this.email = email;
         this.picture = picture;
     }
+
+
 }

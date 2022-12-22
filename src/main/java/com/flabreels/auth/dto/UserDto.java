@@ -13,16 +13,19 @@ public class UserDto {
     private String email;
     private String picture;
     private String name;
+    private String id;
 
     @Builder
-    public UserDto(String email, String picture, String name) {
+    public UserDto(String email, String picture, String name, String id) {
         this.email = email;
         this.picture = picture;
         this.name = name;
+        this.id = id;
     }
 
     public User toEntity(UserDto userDto, String refreshToken){
         return User.builder()
+                .id(userDto.getId())
                 .email(userDto.getEmail())
                 .name(userDto.getName())
                 .refreshToken(refreshToken)

@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 public class ValidResponseDto {
     private String email;
     private String picture;
-
+    private String id;
     @Builder
-    public ValidResponseDto(String email, String picture) {
+    public ValidResponseDto(String email, String picture, String id) {
         this.email = email;
         this.picture = picture;
+        this.id = id;
     }
 }
