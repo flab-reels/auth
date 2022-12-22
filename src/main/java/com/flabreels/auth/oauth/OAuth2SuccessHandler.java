@@ -38,7 +38,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
         TokenResponseDto tokenResponseDto = null;
         //이메일 있으면 중복 체크해서 DB에 쌓이지 않도록 설정
-        User existedUser = userRepository.findUserById(userDto.getEmail());
+        User existedUser = userRepository.findUserByEmail(userDto.getEmail());
         if (existedUser == null){
             tokenResponseDto = tokenService.generateToken(userDto.getId(), userDto.getEmail(), userDto.getPicture() ,Role.USER, Platform.WEB);
             log.info("{}", tokenResponseDto);
