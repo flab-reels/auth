@@ -16,7 +16,7 @@ public class TokenResponseDto {
     private String email;
     private String picture;
     private Platform platform;
-
+    //WEB용
     @Builder
     public TokenResponseDto(String id, String accessToken, String refreshToken, String email, String picture, Platform platform) {
         this.id = id;
@@ -26,42 +26,14 @@ public class TokenResponseDto {
         this.picture = picture;
         this.platform = platform;
     }
-
-
-
+    //MOBILE용
     @Builder
-    public TokenResponseDto(String id, String accessToken, Platform platform) {
+    public TokenResponseDto(String id, String accessToken, String email, String picture, Platform platform) {
         this.id = id;
         this.accessToken = accessToken;
-        this.platform = platform;
-    }
-
-
-    @Builder
-    public TokenResponseDto(String id, String accessToken, String refreshToken, String email, Platform platform) {
-        this.id = id;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-        this.email = email;
-        this.platform = platform;
-    }
-
-
-
-    @Builder
-    public TokenResponseDto(String id, String accessToken, String email,  Platform platform) {
-        this.id = id;
-        this.accessToken = accessToken;
-        this.email = email;
-        this.platform = platform;
-    }
-
-    @Builder
-    public TokenResponseDto(String id, String email, String picture) {
-        this.id = id;
         this.email = email;
         this.picture = picture;
+        this.platform = platform;
     }
-
 
 }

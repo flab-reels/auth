@@ -32,7 +32,7 @@ public class TokenService {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public TokenResponseDto generateToken(String id, Role role, Platform platform){
+    public TokenResponseDto generateToken(String id, String email, String picture, Role role, Platform platform){
 
         Claims claims = Jwts.claims().setSubject(id);
         claims.put("role", role);
@@ -40,6 +40,7 @@ public class TokenService {
         // WEB일경우 AccessToken , RefreshToken 반환
         if (platform == Platform.WEB){
             return new TokenResponseDto(
+                    id,
                     Jwts.builder()
                             .setClaims(claims)
                             .setIssuedAt(now)
@@ -52,19 +53,22 @@ public class TokenService {
                             .setExpiration(new Date(now.getTime() + refreshTokenPeriod))
                             .signWith(SignatureAlgorithm.HS256, secretKey)
                             .compact()
-                    ,id
+                    ,email
+                    ,picture
                     ,Platform.WEB
             );
         }
         // MOBILE 일경우 AccessToken 만 반환 -> 기간은 RefreshToken 만큼
         return new TokenResponseDto(
+                id,
                 Jwts.builder()
                         .setClaims(claims)
                         .setIssuedAt(now)
                         .setExpiration(new Date(now.getTime() + refreshTokenPeriod))
                         .signWith(SignatureAlgorithm.HS256, secretKey)
                         .compact()
-                ,id
+                ,email
+                ,picture
                 ,Platform.MOBILE
         );
 
@@ -74,32 +78,36 @@ public class TokenService {
         String refreshToken = request.getHeader("refresh_token");
         User user = userRepository.findUserByRefreshToken(refreshToken);
         String id = user.getId();
-        String dbEmail = user.getEmail();
+        String email = user.getEmail();
+        String picture = user.getPicture();
         String dbRefreshToken = user.getRefreshToken();
         log.info("{}",user);
-        // Refresh Token이 유효하고 RefreshToken과 일치하다며 ID가 Database에 존재한다면
 
+        // Refresh Token이 유효하고 RefreshToken과 일치하다며 ID가 Database에 존재한다면
         if ((verifyRefreshToken(request)) && (refreshToken.equals(dbRefreshToken)) && (id != null)){
             Claims claims = Jwts.claims().setSubject(id);
             claims.put("role", user.getRole());
             Date now = new Date();
             return new TokenResponseDto(
+                    id,
                     Jwts.builder()
                             .setClaims(claims)
                             .setIssuedAt(now)
                             .setExpiration(new Date(now.getTime() + accessTokenPeriod))
                             .signWith(SignatureAlgorithm.HS256, secretKey)
                             .compact()
-                    ,dbRefreshToken
-                    ,id
+                    ,email
+                    ,picture
                     ,Platform.WEB
             );
-
         }
         // ID가 유효하고 Access Token 과 Refresh Token 이 만료 되었다면 새로이 Token들을 재발급
-        return generateToken(id,Role.USER,Platform.WEB);
+        return generateToken(id,email,picture,Role.USER,Platform.WEB);
     }
 
+    /**
+     * 토큰 검증 LAMBDA AUTHORIZER 검증용 메서드
+     */
     //토큰 검증
     public boolean verifyAccessToken(HttpServletRequest request){
         String accessToken = request.getHeader("access_token");
@@ -135,8 +143,10 @@ public class TokenService {
     public ValidResponseDto getIdAndPicture(String token) {
         String id = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         String picture = userRepository.findUserById(id).getPicture();
+        String email = userRepository.findUserById(id).getEmail();
         return ValidResponseDto.builder()
                 .id(id)
+                .email(email)
                 .picture(picture)
                 .build();
     }

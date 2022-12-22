@@ -36,7 +36,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
-        TokenResponseDto tokenResponseDto = tokenService.generateToken(userDto.getId(), Role.USER, Platform.WEB);
+        TokenResponseDto tokenResponseDto = tokenService.generateToken(userDto.getId(), userDto.getEmail(), userDto.getPicture() ,Role.USER, Platform.WEB);
         log.info("{}", tokenResponseDto);
 
         //이메일 있으면 중복 체크해서 DB에 쌓이지 않도록 설정
