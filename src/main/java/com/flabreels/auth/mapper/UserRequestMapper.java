@@ -1,6 +1,7 @@
 package com.flabreels.auth.mapper;
 
 import com.flabreels.auth.dto.UserDto;
+import com.flabreels.auth.entity.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,15 @@ public class UserRequestMapper {
                 .email((String) attributes.get("email"))
                 .name((String) attributes.get("name"))
                 .picture((String) attributes.get("picture"))
+                .build();
+    }
+
+    public UserDto toDto(User user){
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .picture(user.getPicture())
                 .build();
     }
 }
