@@ -4,15 +4,14 @@ spring:
       client:
         registration:
           facebook:
-            client-id: 1175640313043216
+            client-id: ${facebookClientId}
             client-secret: ${facebookSecret}
             redirect-uri:  "{baseUrl}/{action}/oauth2/code/{registrationId}"
-
             scope:
               - email
               - public_profile
           naver:
-            client-id: UbTn1oyNc2ddhpxcUdKQ
+            client-id: ${naverClientId}
             client-secret: ${naverSecret}
             redirect-uri:  "{baseUrl}/{action}/oauth2/code/{registrationId}"
 
@@ -22,7 +21,7 @@ spring:
               - email
               - profile_image
           google:
-            client-id: 354098202531-cm8qe3s9g2jcjjg5naa3afdc4fv7fqh7.apps.googleusercontent.com
+            client-id: ${googleClientId}
             client-secret: ${googleSecret}
             redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
             scope:

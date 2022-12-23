@@ -20,8 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 public class AuthController {
 
+
     final private TokenService tokenService;
     final private UserRepository userRepository;
+
+
 
     @GetMapping("/authorize")
     public String validEmail(HttpServletRequest request, HttpServletResponse response){

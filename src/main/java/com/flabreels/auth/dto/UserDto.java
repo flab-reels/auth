@@ -18,6 +18,7 @@ public class UserDto {
     private Platform platform;
     private String refreshToken;
 
+
     @Builder
     public UserDto(String email, String picture, String name, String id, String refreshToken, Role role, Platform platform) {
         this.email = email;
