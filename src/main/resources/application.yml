@@ -48,8 +48,8 @@ spring:
   #  h2:
   #    console:
   #      enabled: true
-
   datasource:
+    # jdbc:mysql://auth-user.c8rfpvihe7gd.ap-northeast-2.rds.amazonaws.com:3306/auth?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     url: ${databaseUrl}
     username: ${databaseUser}
     password: ${databasePassword}
