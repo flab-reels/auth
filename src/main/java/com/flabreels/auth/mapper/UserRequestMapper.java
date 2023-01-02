@@ -27,6 +27,7 @@ public class UserRequestMapper {
                 .name(user.getName())
                 .refreshToken(user.getRefreshToken())
                 .picture(user.getPicture())
+                .platform(user.getPlatform())
                 .build();
     }
 }

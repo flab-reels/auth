@@ -1,3 +1,5 @@
+
+
 spring:
   security:
     oauth2:
@@ -41,19 +43,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
-  #    datasource:
-  #      hikari:
-  #        username: sa
-  #        jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
-  #  h2:
-  #    console:
-  #      enabled: true
+
   datasource:
-    # jdbc:mysql://auth-user.c8rfpvihe7gd.ap-northeast-2.rds.amazonaws.com:3306/auth?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     url: ${databaseUrl}
     username: ${databaseUser}
     password: ${databasePassword}
-
+#  profiles:
+#    include: credential
+#
 
 jwt:
   secret_key: f-lab-reels
